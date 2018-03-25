@@ -1,4 +1,4 @@
-package knapsack;
+package knapsack.helper;
 
 public class Calculation {
     public static int getMax(int group, int[] row, int[] groups, int n) {
