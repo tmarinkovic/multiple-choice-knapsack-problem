@@ -2,29 +2,6 @@ package knapsack;
 
 import knapsack.model.Solution;
 
-class dinamic {
-    public int getMax(int group, int[] row, int[] groups, int n) {
-        int max = 0;
-        for (int i = 1; i < n; i++) {
-            if (groups[i] == group) {
-                if (row[i] > max) max = row[i];
-            }
-        }
-        return max;
-    }
-
-    public boolean IsMaxInGroup(int n, int w, int[] groups, int[][] matrix, int N) {
-        int group = groups[n];
-        int max = 0;
-        for (int i = 1; i <= N; i++) {
-            if (groups[i] == group) {
-                if (matrix[w][i] > max) max = matrix[w][i];
-            }
-        }
-        return matrix[w][n] == max;
-    }
-}
-
 public class Knapsack {
 
     public Solution solve(){
@@ -41,7 +18,6 @@ public class Knapsack {
 
         //number of elements
         int N = profit.length - 1;
-        dinamic din = new dinamic();
         int[][] matrix = new int[W + 1][N + 1];
         boolean[][] sol = new boolean[W + 1][N + 1];
 
@@ -59,19 +35,19 @@ public class Knapsack {
                     }
                 } else {
                     if (group[n] != group[n - 1]) {
-                        int option1 = din.getMax(group[n - 1], matrix[w], group, n);
+                        int option1 = Calculation.getMax(group[n - 1], matrix[w], group, n);
                         int option2 = Integer.MIN_VALUE;
                         if (weight[n] <= w) {
-                            option2 = profit[n] + din.getMax(group[n - 1], matrix[w - weight[n]], group, n);
+                            option2 = profit[n] + Calculation.getMax(group[n - 1], matrix[w - weight[n]], group, n);
                         }
                         matrix[w][n] = Math.max(option1, option2);
                         sol[w][n] = (option2 > option1);
                     }
                     if (group[n] == group[n - 1]) {
-                        int option1 = din.getMax(group[n] - 1, matrix[w], group, n);
+                        int option1 = Calculation.getMax(group[n] - 1, matrix[w], group, n);
                         int option2 = Integer.MIN_VALUE;
                         if (weight[n] <= w) {
-                            option2 = profit[n] + din.getMax(group[n] - 1, matrix[w - weight[n]], group, n);
+                            option2 = profit[n] + Calculation.getMax(group[n] - 1, matrix[w - weight[n]], group, n);
                         }
                         matrix[w][n] = Math.max(option1, option2);
                         sol[w][n] = (option2 > option1);
@@ -93,7 +69,7 @@ public class Knapsack {
         // determine which items to take
         boolean[] take = new boolean[N + 1];
         for (int n = N, w = W; n > 0; n--) {
-            if (sol[w][n] && din.IsMaxInGroup(n, w, group, matrix, N)) {
+            if (sol[w][n] && Calculation.IsMaxInGroup(n, w, group, matrix, N)) {
                 take[n] = true;
                 w = w - weight[n];
             } else {
