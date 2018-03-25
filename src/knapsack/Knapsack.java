@@ -1,3 +1,7 @@
+package knapsack;
+
+import knapsack.model.Solution;
+
 class dinamic {
     public int getMax(int group, int[] row, int[] groups, int n) {
         int max = 0;
@@ -17,16 +21,13 @@ class dinamic {
                 if (matrix[w][i] > max) max = matrix[w][i];
             }
         }
-        if (matrix[w][n] != max) return false;
-        return true;
+        return matrix[w][n] == max;
     }
 }
 
 public class Knapsack {
 
-    public static void main(String[] args) {
-
-
+    public Solution solve(){
         //problem
             //size of bag
             int W = 15;
@@ -105,6 +106,8 @@ public class Knapsack {
         for (int n = 1; n <= N; n++) {
             System.out.println(n + "\t\t" + profit[n] + "\t\t" + weight[n] + "\t\t" + take[n]);
         }
+
+        return new Solution(take);
 
 
     }
