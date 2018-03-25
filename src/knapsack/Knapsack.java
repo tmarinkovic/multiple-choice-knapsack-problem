@@ -2,33 +2,35 @@ package knapsack;
 
 import knapsack.helper.Calculation;
 import knapsack.helper.Printer;
+import knapsack.model.Problem;
 import knapsack.model.Solution;
 
 public class Knapsack {
 
+    private Problem problem;
+
+    Knapsack(Problem problem) {
+        this.problem = problem;
+    }
+
     public Solution solve() {
-        //problem
-        //size of bag
-        int W = 15;
-        //profits
-        int[] profit = {0, 15, 11, 5, 8, 12, 18, 20, 14, 8, 9, 6, 10, 50, 7, 2, 3, 6, 5};
-        //weights
-        int[] weight = {0, 8, 4, 4, 3, 5, 14, 11, 5, 4, 6, 3, 5, 1, 5, 3, 2, 9, 7};
-        //groups of each item ( array start at 1 so first element is non existing group -1 )
-        int[] group = {-1, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 4, 4, 4, 4};
+        int bagSize = problem.getBagSize();
+        int[] profit = problem.getProfit();
+        int[] weight = problem.getWeight();
+        int[] group = problem.getGroup();
 
 
         //number of elements
         int N = profit.length - 1;
-        int[][] matrix = new int[W + 1][N + 1];
-        boolean[][] solution = new boolean[W + 1][N + 1];
+        int[][] matrix = new int[bagSize + 1][N + 1];
+        boolean[][] solution = new boolean[bagSize + 1][N + 1];
 
         //just to make print pretty :D
-        for (int i = 0; i <= W; i++) {
+        for (int i = 0; i <= bagSize; i++) {
             matrix[i][0] = i;
         }
 
-        for (int w = 1; w <= W; w++) {
+        for (int w = 1; w <= bagSize; w++) {
             for (int n = 1; n <= N; n++) {
                 if (group[n] == 0) {
                     if (weight[n] <= w) {
@@ -59,8 +61,8 @@ public class Knapsack {
         }
 
 
-        Printer.printBagTable(W, N, matrix);
-        boolean[] take = getSolution(N,W,solution,group,matrix,weight);
+        Printer.printBagTable(bagSize, N, matrix);
+        boolean[] take = getSolution(N,bagSize,solution,group,matrix,weight);
         Printer.printResult(N, profit, weight, take);
 
         return new Solution(take);

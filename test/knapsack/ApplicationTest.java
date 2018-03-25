@@ -1,5 +1,6 @@
 package knapsack;
 
+import knapsack.model.Problem;
 import knapsack.model.Solution;
 import org.junit.jupiter.api.Test;
 
@@ -9,7 +10,7 @@ class ApplicationTest {
 
     @Test
     void shouldReturnDesiredSolution() {
-        Knapsack knapsack = new Knapsack();
+        Knapsack knapsack = new Knapsack(new Problem());
         Solution solution = knapsack.solve();
 
         Solution expectedSolution = new Solution(
