@@ -8,9 +8,11 @@ import knapsack.model.Solution;
 public class Knapsack {
 
     private Problem problem;
+    private int maximumProfit;
 
     Knapsack(Problem problem) {
         this.problem = problem;
+        this.maximumProfit = 0;
     }
 
     public Solution solve() {
@@ -35,46 +37,52 @@ public class Knapsack {
                         matrix[w][n] = profit[n];
                         solution[w][n] = true;
                     }
-                } else if (group[n] != group[n - 1]) {
-                    int option1 = Calculation.getMax(group[n - 1], matrix[w], group, n);
-                    int option2 = Integer.MIN_VALUE;
-                    if (weight[n] <= w) {
-                        option2 = profit[n] + Calculation.getMax(group[n - 1], matrix[w - weight[n]], group, n);
-                    }
-                    matrix[w][n] = Math.max(option1, option2);
-                    solution[w][n] = (option2 > option1);
-                } else if (group[n] == group[n - 1]) {
+                } else {
                     int option1 = Calculation.getMax(group[n] - 1, matrix[w], group, n);
                     int option2 = Integer.MIN_VALUE;
+                    int option3 = Calculation.getMax(group[n], matrix[w], group, n);
                     if (weight[n] <= w) {
                         option2 = profit[n] + Calculation.getMax(group[n] - 1, matrix[w - weight[n]], group, n);
                     }
                     matrix[w][n] = Math.max(option1, option2);
-                    solution[w][n] = (option2 > option1);
+                    updateMaximumProfit(matrix[w][n]);
+                    solution[w][n] = (option2 > option1) && (option2 > option3);
                 }
-
             }
         }
 
-
         Printer.printBagTable(bagSize, N, matrix);
+        Printer.printSolutionTable(bagSize, N, solution);
         boolean[] take = getSolution(N, bagSize, solution, group, matrix, weight);
-        Printer.printResult(N, profit, weight, take);
-
+        Printer.printResult(N, profit, weight, group, take);
         return new Solution(take);
+    }
 
+    private void updateMaximumProfit(int profit) {
+        if ( profit > maximumProfit){
+            maximumProfit = profit;
+        }
     }
 
     private boolean[] getSolution(int N, int W, boolean[][] sol, int[] group, int[][] matrix, int[] weight) {
         boolean[] solution = new boolean[N + 1];
+        int lastTakenGroup = -1;
         for (int n = N, w = W; n > 0; n--) {
             if (sol[w][n] && Calculation.IsMaxInGroup(n, w, group, matrix, N)) {
+                if(group[n] == lastTakenGroup){
+                    continue;
+                }
                 solution[n] = true;
                 w = w - weight[n];
+                lastTakenGroup = group[n];
             } else {
                 solution[n] = false;
             }
         }
         return solution;
+    }
+
+    public int getMaximumProfit() {
+        return maximumProfit;
     }
 }
