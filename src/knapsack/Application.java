@@ -1,11 +1,11 @@
 package knapsack;
 
-import knapsack.model.Problem;
+import knapsack.model.OneOrNoneFromGroupProblem;
 
 public class Application {
 
     public static void main(String[] args) {
-        Knapsack knapsack = new Knapsack(new Problem());
+        Knapsack knapsack = new Knapsack(new OneOrNoneFromGroupProblem());
         knapsack.solve();
     }
 }

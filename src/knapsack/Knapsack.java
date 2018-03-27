@@ -1,6 +1,5 @@
 package knapsack;
 
-import knapsack.helper.Calculation;
 import knapsack.helper.Printer;
 import knapsack.model.Problem;
 import knapsack.model.Solution;
@@ -34,19 +33,21 @@ public class Knapsack {
             for (int n = 1; n <= N; n++) {
                 if (group[n] == 0) {
                     if (weight[n] <= w) {
-                        matrix[w][n] = profit[n];
+                        int option2 = profit[n] + problem.getMax(group[n] - 1, matrix[w - weight[n]], group, n);
+                        matrix[w][n] = Math.max(profit[n], option2);
+                        updateMaximumProfit(matrix[w][n]);
                         solution[w][n] = true;
                     }
                 } else {
-                    int option1 = Calculation.getMax(group[n] - 1, matrix[w], group, n);
+                    int option1 = problem.getMax(group[n] - 1, matrix[w], group, n);
                     int option2 = Integer.MIN_VALUE;
-                    int option3 = Calculation.getMax(group[n], matrix[w], group, n);
+                    int option3 = problem.getMax(group[n], matrix[w], group, n);
                     if (weight[n] <= w) {
-                        option2 = profit[n] + Calculation.getMax(group[n] - 1, matrix[w - weight[n]], group, n);
+                        option2 = profit[n] + problem.getMax(group[n] - 1, matrix[w - weight[n]], group, n);
                     }
                     matrix[w][n] = Math.max(option1, option2);
                     updateMaximumProfit(matrix[w][n]);
-                    solution[w][n] = (option2 > option1) && (option2 > option3);
+                    solution[w][n] = problem.getSolution(option1,option2,option3);
                 }
             }
         }
@@ -68,8 +69,8 @@ public class Knapsack {
         boolean[] solution = new boolean[N + 1];
         int lastTakenGroup = -1;
         for (int n = N, w = W; n > 0; n--) {
-            if (sol[w][n] && Calculation.IsMaxInGroup(n, w, group, matrix, N)) {
-                if(group[n] == lastTakenGroup){
+            if (sol[w][n] && problem.calculateIsMax(n, w, group, matrix, N)) {
+                if(problem.checkIfInSameGroup(n, lastTakenGroup, group)){
                     continue;
                 }
                 solution[n] = true;
