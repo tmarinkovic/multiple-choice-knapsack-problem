@@ -11,7 +11,7 @@ public class Printer {
         }
     }
 
-    public static void printResult(int N, int[] profit, int[] weight, int[] group, boolean[] take) {
+    public static void printChosenItems(int N, int[] profit, int[] weight, int[] group, boolean[] take) {
         System.out.println("item" + "\t" + "profit" + "\t" + "weight" + "\t" + "group" + "\t" + "take");
         for (int n = 1; n <= N; n++) {
             System.out.println(n + "\t\t" + profit[n] + "\t\t" + weight[n] + "\t\t" + group[n] + "\t\t" + take[n]);
@@ -25,5 +25,20 @@ public class Printer {
             }
             System.out.println();
         }
+    }
+
+    public static void printResult(int N, int[] profit, int[] weight, int[] group, boolean[] take) {
+        StringBuilder result = new StringBuilder("Items picked: ");
+        int totalProfit = 0;
+        int totalWeight = 0;
+        for (int n = 1; n <= N; n++) {
+            if (take[n]) {
+                result.append(n).append(" ");
+                totalProfit += profit[n];
+                totalWeight += weight[n];
+            }
+        }
+        result.append(String.format("with total profit of %s and weight %s", totalProfit, totalWeight));
+        System.out.println(result);
     }
 }

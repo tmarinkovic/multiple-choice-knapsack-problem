@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class ApplicationTest {
+class MultipleChoiceKnapsackProblemTest {
 
     @Test
     void shouldReturnDesiredSolution1() {

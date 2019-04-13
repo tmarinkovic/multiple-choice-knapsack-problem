@@ -4,7 +4,7 @@ import knapsack.helper.Printer;
 import knapsack.model.Problem;
 import knapsack.model.Solution;
 
-public class Knapsack {
+class Knapsack {
 
     private Problem problem;
     private int maximumProfit;
@@ -14,7 +14,7 @@ public class Knapsack {
         this.maximumProfit = 0;
     }
 
-    public Solution solve() {
+    Solution solve() {
         int bagSize = problem.getBagSize();
         int[] profit = problem.getProfit();
         int[] weight = problem.getWeight();
@@ -47,20 +47,21 @@ public class Knapsack {
                     }
                     matrix[w][n] = Math.max(option1, option2);
                     updateMaximumProfit(matrix[w][n]);
-                    solution[w][n] = problem.getSolution(option1,option2,option3);
+                    solution[w][n] = problem.getSolution(option1, option2, option3);
                 }
             }
         }
 
-        Printer.printBagTable(bagSize, N, matrix);
-        Printer.printSolutionTable(bagSize, N, solution);
+//        Printer.printBagTable(bagSize, N, matrix);
+//        Printer.printSolutionTable(bagSize, N, solution);
         boolean[] take = getSolution(N, bagSize, solution, group, matrix, weight);
+//        Printer.printChosenItems(N, profit, weight, group, take);
         Printer.printResult(N, profit, weight, group, take);
         return new Solution(take);
     }
 
     private void updateMaximumProfit(int profit) {
-        if ( profit > maximumProfit){
+        if (profit > maximumProfit) {
             maximumProfit = profit;
         }
     }
@@ -70,7 +71,7 @@ public class Knapsack {
         int lastTakenGroup = -1;
         for (int n = N, w = W; n > 0; n--) {
             if (sol[w][n] && problem.calculateIsMax(n, w, group, matrix, N)) {
-                if(problem.checkIfInSameGroup(n, lastTakenGroup, group)){
+                if (problem.checkIfInSameGroup(n, lastTakenGroup, group)) {
                     continue;
                 }
                 solution[n] = true;
@@ -83,7 +84,7 @@ public class Knapsack {
         return solution;
     }
 
-    public int getMaximumProfit() {
+    int getMaximumProfit() {
         return maximumProfit;
     }
 }
