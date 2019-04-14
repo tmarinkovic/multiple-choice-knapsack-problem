@@ -30,7 +30,7 @@ Problem() {
 ```
 First element in each of arrays is just a placeholder, problem starts with index 1!
 
-Also, you can initialise different problem with using Problem constructor:
+Also, you can initialise different problem using abstract class Problem constructor:
 ```
 Problem(int bagSize, int[] profit, int[] weight, int[] group) {
 ...
