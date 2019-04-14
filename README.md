@@ -28,7 +28,7 @@ Problem() {
     this.group = new int[]{-1, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 4, 4, 4, 4};
 }
 ```
-First element in each off arrays is just a placeholder, problem starts with index 1!
+First element in each of arrays is just a placeholder, problem starts with index 1!
 
 Also, you can initialise different problem with using Problem constructor:
 ```
